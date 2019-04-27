@@ -19,8 +19,8 @@ mongoose
     useNewUrlParser: true,
     reconnectTries: Number.MAX_VALUE,
   })
-  .then(() => {
-    console.log(`Connected to database`);
+  .then((data) => {
+    console.log(`Connected to database ${data}`);
   })
   .catch(error => {
     console.error(error);
