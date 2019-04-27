@@ -8,24 +8,12 @@ const middlewares = require('../helpers/middlewares');
 
 const router = express.Router();
 
-/*router.post('/new/:userId', (req, res, next) => {
-  const { projectName, description, projectManagerName, date, status, department, priority, linkToDocsStorage } = req.body;
-    console.log('CREATE BODY!! :', req.body);
-    console.log('USERID :', req.params.userId); 
-    Project.create({projectName, description, projectManagerName, date, status, department, priority, linkToDocsStorage})
-    .then((createdObject) => {
-      res.status(200).json(createdObject);
-      })
-    .catch ((error) => {
-      next(error);
-    });
-});*/
-
 //NEW:
 router.post('/new/:userId', (req, res, next) => {
+  console.log('BODYYY: ', req.body);
    Project.create({
-     projectName: req.body.projectToCreate.projectName,
-     description: req.body.projectToCreate.description
+     projectName: req.body.projectName,
+     description: req.body.description
    })
    .then(response => {
      res.json(response);
@@ -35,6 +23,8 @@ router.post('/new/:userId', (req, res, next) => {
    })
 });
 
+
+//PROJECT DETAIL
 router.get('/projects/:id', (req, res, next) => {
   if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
     res.status(400).json({message: 'Id not valid'})
@@ -48,6 +38,7 @@ router.get('/projects/:id', (req, res, next) => {
     })
 })
 
+//PROJECT UPDATE
 router.put('/projects/:id/update', (req, res, next) =>{
   if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
     res.status(400).json({ message: 'Id not valid'});
@@ -62,8 +53,8 @@ router.put('/projects/:id/update', (req, res, next) =>{
   })
 })
 
-    
-router.delete('projects/:id/delete', (req, res, next) => {
+//PROJECT DELETE    
+router.delete('/projects/:id/delete', (req, res, next) => {
   if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
     res.status(400).json({ message: 'Id not valid'});
   }
@@ -74,6 +65,17 @@ router.delete('projects/:id/delete', (req, res, next) => {
     .catch( error => {
       res.json(error);
     })
+})
+
+//LIST OF ALL PROJECTS
+router.get('/allprojects', (req, res, next) => {
+  Project.find()
+  .then((trips) => {
+    res.status(200).json(trips);
+  })
+  .catch(error => {
+    res.json(error);
+  })
 })
      
 

@@ -14,7 +14,7 @@ const auth = require('./routes/auth');
 const projectRoutes = require('./routes/project-routes');
 
 mongoose
-  .connect(process.env.MONGODB_URI, {
+  .connect(process.env.ATLAS_URI, {
     keepAlive: true,
     useNewUrlParser: true,
     reconnectTries: Number.MAX_VALUE,
