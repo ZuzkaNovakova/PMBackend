@@ -12,6 +12,7 @@ require('dotenv').config();
 
 const auth = require('./routes/auth');
 const projectRoutes = require('./routes/project-routes');
+const taskRoutes = require('./routes/task-routes');
 
 mongoose
   .connect(process.env.ATLAS_URI, {
@@ -65,6 +66,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', auth);
 app.use('/project-routes', projectRoutes);
+app.use('/task-routes', taskRoutes);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
