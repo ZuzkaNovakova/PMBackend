@@ -9,8 +9,9 @@ const middlewares = require('../helpers/middlewares');
 const router = express.Router();
 
 //NEW:
-router.post('/new/:userId', (req, res, next) => {
-  console.log('BODYYY: ', req.body);
+router.post('/new', (req, res, next) => {
+  console.log('BODYYY: ', req.session.currentUser._id);
+  const userId = req.session.currentUser._id;
    Project.create({
      projectName: req.body.projectName,
      description: req.body.description
@@ -26,9 +27,6 @@ router.post('/new/:userId', (req, res, next) => {
 
 //PROJECT DETAIL
 router.get('/projects/:id', (req, res, next) => {
-  if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    res.status(400).json({message: 'Id not valid'})
-  }
   Project.findById(req.params.id).populate('tasks')
     .then(response => {
       res.status(200).json(response);
@@ -40,10 +38,6 @@ router.get('/projects/:id', (req, res, next) => {
 
 //PROJECT UPDATE
 router.put('/projects/:id/update', (req, res, next) =>{
-  if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    res.status(400).json({ message: 'Id not valid'});
-    return;
-  }
   Project.findByIdAndUpdate(req.params.id, req.body)
   .then(() => {
     res.json({ message: 'Project ${req.params.id} is updated'});
@@ -55,9 +49,6 @@ router.put('/projects/:id/update', (req, res, next) =>{
 
 //PROJECT DELETE    
 router.delete('/projects/:id/delete', (req, res, next) => {
-  if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    res.status(400).json({ message: 'Id not valid'});
-  }
   Project.findByIdAndRemove(req.params.id)
     .then(() => {
       res.json({ message: 'Project with ${req.params.id} removed'});
